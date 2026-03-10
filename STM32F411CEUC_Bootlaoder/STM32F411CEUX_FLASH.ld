@@ -45,7 +45,7 @@ _Min_Stack_Size = 0x400; /* required amount of stack */
 MEMORY
 {
   RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 128K
-  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 512K
+  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 48K /* Sectors 0-2 For Bootloader Memory*/ /* For Application use this (Sectors 3-7  ): FLASH (rx)  : ORIGIN = 0x0800C000, LENGTH = 464K  */
 }
 
 /* Sections */
@@ -185,4 +185,8 @@ SECTIONS
   }
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
+  
+  
+    /* Bootloader must not exceed 48KB */
+  ASSERT(. <= 0x08000000 + 48K, "Bootloader exceeds 48KB!")
 }

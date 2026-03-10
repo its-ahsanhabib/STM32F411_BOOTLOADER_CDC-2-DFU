@@ -134,3 +134,17 @@ void CheckForBootloaderMode(void)
         Bootloader_JumpToApplication();
     }
 }
+
+
+/* ── Helper: Address → Sector Number ─────────────────────── */
+uint32_t GetSector(uint32_t Address)
+{
+    if      (Address < 0x08004000) return FLASH_SECTOR_0;  // 16KB
+    else if (Address < 0x08008000) return FLASH_SECTOR_1;  // 16KB
+    else if (Address < 0x0800C000) return FLASH_SECTOR_2;  // 16KB
+    else if (Address < 0x08010000) return FLASH_SECTOR_3;  // 16KB
+    else if (Address < 0x08020000) return FLASH_SECTOR_4;  // 64KB
+    else if (Address < 0x08040000) return FLASH_SECTOR_5;  // 128KB
+    else if (Address < 0x08060000) return FLASH_SECTOR_6;  // 128KB
+    else                           return FLASH_SECTOR_7;  // 128KB
+}

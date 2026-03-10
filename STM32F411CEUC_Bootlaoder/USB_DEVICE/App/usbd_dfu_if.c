@@ -61,10 +61,10 @@
   * @{
   */
 
-#define FLASH_DESC_STR      "@Internal Flash   /0x08000000/03*016Ka,01*016Kg,01*064Kg,07*128Kg,04*016Kg,01*064Kg,07*128Kg"
+//#define FLASH_DESC_STR      "@Internal Flash   /0x08000000/03*016Ka,01*016Kg,01*064Kg,07*128Kg,04*016Kg,01*064Kg,07*128Kg"
 
 /* USER CODE BEGIN PRIVATE_DEFINES */
-//#define FLASH_DESC_STR   "@Internal Flash /0x08000000/04*016Kg,01*064Kg,03*128Kg"
+//#define FLASH_DESC_STR  "@Internal Flash /0x08008000/02*016Kg,01*064Kg,03*128Kg"
 /* USER CODE END PRIVATE_DEFINES */
 
 /**
@@ -125,18 +125,7 @@ static uint16_t MEM_If_DeInit_FS(void);
 static uint16_t MEM_If_GetStatus_FS(uint32_t Add, uint8_t Cmd, uint8_t *buffer);
 
 /* USER CODE BEGIN PRIVATE_FUNCTIONS_DECLARATION */
-/* ── Helper: Address → Sector Number ─────────────────────── */
-static uint32_t GetSector(uint32_t Address)
-{
-    if      (Address < 0x08004000) return FLASH_SECTOR_0;  // 16KB
-    else if (Address < 0x08008000) return FLASH_SECTOR_1;  // 16KB
-    else if (Address < 0x0800C000) return FLASH_SECTOR_2;  // 16KB
-    else if (Address < 0x08010000) return FLASH_SECTOR_3;  // 16KB
-    else if (Address < 0x08020000) return FLASH_SECTOR_4;  // 64KB
-    else if (Address < 0x08040000) return FLASH_SECTOR_5;  // 128KB
-    else if (Address < 0x08060000) return FLASH_SECTOR_6;  // 128KB
-    else                           return FLASH_SECTOR_7;  // 128KB
-}
+
 /* USER CODE END PRIVATE_FUNCTIONS_DECLARATION */
 
 /**
