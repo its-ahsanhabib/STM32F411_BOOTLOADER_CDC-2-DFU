@@ -94,7 +94,7 @@ int main(void)
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
   printf( "###############-----------Code Started - BOOTLOADER - 0 -----------###############\n\r");
-//  CheckForBootloaderMode();
+  CheckForBootloaderMode();
   /* USER CODE END 2 */
 
   /* Infinite loop */

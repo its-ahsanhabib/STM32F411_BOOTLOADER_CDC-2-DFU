@@ -79,14 +79,20 @@ void Bootloader_JumpToApplication(void)
     /* Disable all interrupts */
     __disable_irq();
 
-    /* Deinit HAL */
-    HAL_RCC_DeInit();
-    HAL_DeInit();
-
-    /* Stop SysTick */
+    /* ── Kill SysTick completely ────────────────────── */
     SysTick->CTRL = 0;
     SysTick->LOAD = 0;
     SysTick->VAL  = 0;
+
+    /* ── Clear ALL pending IRQs ─────────────────────── */
+    for(int i = 0; i < 8; i++) {
+        NVIC->ICER[i] = 0xFFFFFFFF;
+        NVIC->ICPR[i] = 0xFFFFFFFF;
+    }
+
+    /* ── Deinit HAL ─────────────────────── */
+    HAL_RCC_DeInit();
+    HAL_DeInit();
 
     /* Relocate vector table to app */
     SCB->VTOR = APP_ADDRESS;
@@ -101,6 +107,52 @@ void Bootloader_JumpToApplication(void)
     /* Should never reach here */
     while(1);
 }
+
+//void Bootloader_JumpToApplication(void)
+//{
+//    uint32_t appStack = *(volatile uint32_t*)APP_ADDRESS;
+//    uint32_t appEntry = *(volatile uint32_t*)(APP_ADDRESS + 4);
+//
+//    printf("[BOOT] Jumping to app at 0x%08lX, stack=0x%08lX\r\n", appEntry, appStack);
+//
+//    /* ── Step 1: Deinit HAL FIRST (while SysTick still alive) ── */
+//    HAL_DeInit();
+//    HAL_RCC_DeInit();
+//
+//    /* ── Step 2: THEN disable IRQs ─────────────────────────── */
+//    __disable_irq();
+//
+//    /* ── Step 3: THEN kill SysTick ─────────────────────────── */
+//    SysTick->CTRL = 0;
+//    SysTick->LOAD = 0;
+//    SysTick->VAL  = 0;
+//
+//    /* ── Step 4: Clear ALL pending IRQs ────────────────────── */
+//    for(int i = 0; i < 8; i++) {
+//        NVIC->ICER[i] = 0xFFFFFFFF;
+//        NVIC->ICPR[i] = 0xFFFFFFFF;
+//    }
+//
+//    /* Reset ALL peripherals via RCC directly */
+//    RCC->AHB1RSTR = 0xFFFFFFFF;  RCC->AHB1RSTR = 0;
+//    RCC->AHB2RSTR = 0xFFFFFFFF;  RCC->AHB2RSTR = 0;
+//    RCC->APB1RSTR = 0xFFFFFFFF;  RCC->APB1RSTR = 0;
+//    RCC->APB2RSTR = 0xFFFFFFFF;  RCC->APB2RSTR = 0;
+//
+//    /* ── Step 5: Relocate vectors ───────────────────────────── */
+//    SCB->VTOR = APP_ADDRESS;
+//
+//    /* Data Synchronization Barrier — ensure all writes complete */
+//    __DSB();
+//    __ISB();
+//
+//    /* ── Step 6: Jump ───────────────────────────────────────── */
+//    __set_MSP(appStack);
+//    pFunction appReset = (pFunction)appEntry;
+//    appReset();
+//
+//    while(1);
+//}
 
 /* ─────────────────────────────────────────────────────
    Check backup register for DFU request magic number

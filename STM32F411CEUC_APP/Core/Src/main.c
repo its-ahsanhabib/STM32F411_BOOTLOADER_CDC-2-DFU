@@ -68,7 +68,23 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+	/* ── Step 1: Kill SysTick IMMEDIATELY ──────────── */
+	SysTick->CTRL = 0;          // Stop SysTick
+	SysTick->LOAD = 0;
+	SysTick->VAL  = 0;
+
+	/* ── Step 2: Clear ALL pending IRQs ────────────── */
+	__disable_irq();
+	for(int i = 0; i < 8; i++) {
+		NVIC->ICER[i] = 0xFFFFFFFF;  // Disable all
+		NVIC->ICPR[i] = 0xFFFFFFFF;  // Clear pending
+	}
+
+	/* ── Step 3: Set VTOR NOW ───────────────────────── */
 	SCB->VTOR = 0x0800C000U;
+
+	/* ── Step 4: Re-enable IRQs ─────────────────────── */
+	__enable_irq();
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -102,7 +118,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	printf( "-----------Code Running - APP -----------\n\r");
-	HAL_Delay(1000);
+	HAL_Delay(500);
   }
   /* USER CODE END 3 */
 }
