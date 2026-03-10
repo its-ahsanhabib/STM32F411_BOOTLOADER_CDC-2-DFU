@@ -52,7 +52,8 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
-
+/* ==================== Initialization DBG printf ==================== */
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -92,7 +93,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-
+  printf( "###############-----------Code Started - BOOTLOADER -----------###############\n\r");
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -102,6 +103,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	printf( "-----------Code Running - BOOTLOADER -----------\n\r");
+	HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }
@@ -198,7 +201,6 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
@@ -206,7 +208,11 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+PUTCHAR_PROTOTYPE {
+	/* Place your implementation of fputc here */
+	HAL_UART_Transmit(&huart1, (uint8_t*) &ch, 1, 0xFFFF);
+	return ch;
+}
 /* USER CODE END 4 */
 
 /**
