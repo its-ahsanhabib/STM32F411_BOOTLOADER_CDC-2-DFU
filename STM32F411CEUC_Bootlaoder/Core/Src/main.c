@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <sys/unistd.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,8 +52,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
-/* ==================== Initialization DBG printf ==================== */
-#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -208,10 +207,14 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-PUTCHAR_PROTOTYPE {
-	/* Place your implementation of fputc here */
-	HAL_UART_Transmit(&huart1, (uint8_t*) &ch, 1, 0xFFFF);
-	return ch;
+int _write(int file, char *data, int len)
+{
+    if (file == STDOUT_FILENO || file == STDERR_FILENO)
+    {
+        HAL_UART_Transmit(&huart1, (uint8_t*)data, len, len * 2);
+        return len;
+    }
+    return -1;
 }
 /* USER CODE END 4 */
 
