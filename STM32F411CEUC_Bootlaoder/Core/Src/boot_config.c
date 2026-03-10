@@ -74,8 +74,7 @@ void Bootloader_JumpToApplication(void)
     uint32_t appStack = *(volatile uint32_t*)APP_ADDRESS;
     uint32_t appEntry = *(volatile uint32_t*)(APP_ADDRESS + 4);
 
-    printf("[BOOT] Jumping to app at 0x%08lX, stack=0x%08lX\r\n",
-           appEntry, appStack);
+    printf("[BOOT] Jumping to app at 0x%08lX, stack=0x%08lX\r\n", appEntry, appStack);
 
     /* Disable all interrupts */
     __disable_irq();

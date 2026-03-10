@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <sys/unistd.h>
+#include "boot_config.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -92,7 +93,8 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-  printf( "###############-----------Code Started - BOOTLOADER -----------###############\n\r");
+  printf( "###############-----------Code Started - BOOTLOADER - 0 -----------###############\n\r");
+//  CheckForBootloaderMode();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -102,7 +104,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	printf( "-----------Code Running - BOOTLOADER -----------\n\r");
+	printf( "-----------Code Running - BOOTLOADER - 0 -----------\n\r");
 	HAL_Delay(1000);
   }
   /* USER CODE END 3 */
