@@ -68,7 +68,13 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+#ifdef DEBUG
+  /* * When debugging via ST-Link, we bypass the bootloader.
+  * We must manually point the Vector Table to our app's offset
+  * so interrupts (like SysTick) don't crash the CPU.
+  */
+  SCB->VTOR = 0x0800C000U;
+#endif
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
