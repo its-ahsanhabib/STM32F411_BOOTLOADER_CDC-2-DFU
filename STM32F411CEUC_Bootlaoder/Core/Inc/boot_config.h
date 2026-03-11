@@ -35,6 +35,20 @@
 #define MAGIC_NUMBER         0xDEADBEEF
 #define BACKUP_REGISTER      RTC->BKP0R   // F411 backup register
 
+
+typedef enum ResetReason_e
+{
+    RESET_CAUSE_UNKNOWN = 0,
+    RESET_CAUSE_LOW_POWER_RESET,
+    RESET_CAUSE_WINDOW_WATCHDOG_RESET,
+    RESET_CAUSE_INDEPENDENT_WATCHDOG_RESET,
+    RESET_CAUSE_SOFTWARE_RESET,
+    RESET_CAUSE_POWER_ON_POWER_DOWN_RESET,
+    RESET_CAUSE_EXTERNAL_RESET_PIN_RESET,
+    RESET_CAUSE_BROWNOUT_RESET,
+} ResetReason_t;
+
+
 typedef void (*pFunction)(void);
 
 uint32_t CalculateCRC(uint32_t start, uint32_t length);
@@ -43,5 +57,7 @@ void     Bootloader_JumpToApplication(void);
 void     CheckForBootloaderMode(void);
 
 uint32_t GetSector(uint32_t Address);
+ResetReason_t getResetReason(void);
+const char * getResetReasonName(ResetReason_t reset_cause);
 
 #endif /* BOOT_CONFIG_H */

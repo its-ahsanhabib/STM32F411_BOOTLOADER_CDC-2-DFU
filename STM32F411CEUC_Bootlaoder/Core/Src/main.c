@@ -45,7 +45,7 @@
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-
+static ResetReason_t reset_cause;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -69,7 +69,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+	reset_cause = getResetReason();
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -94,6 +94,8 @@ int main(void)
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
   printf( "###############-----------Code Started - BOOTLOADER - 0 -----------###############\n\r");
+
+  printf("[BOOT] --------- Reset Reason: %s\n\n\n", getResetReasonName(reset_cause));
   CheckForBootloaderMode();
   /* USER CODE END 2 */
 
