@@ -12,6 +12,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#define BOOTLOADER_TIMEOUT_MS  (5 * 60 * 1000)
+
 /* ── Flash Map: STM32F411 (512KB) ──────────────────────
    Sector 0-3: 16KB each  → 0x08000000–0x0800FFFF (bootloader)
    Sector 4:   64KB        → 0x08010000–0x0801FFFF

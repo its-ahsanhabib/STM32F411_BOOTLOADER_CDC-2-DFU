@@ -99,13 +99,24 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  uint32_t bootStartTick = HAL_GetTick();  // ← before while(1)
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	printf( "-----------Code Running - BOOTLOADER - 0 -----------\n\r");
+	printf( "-----------Code Running - BOOTLOADER - %lu Sec -----------\n\r",HAL_GetTick()/1000 );
 	HAL_Delay(1000);
+
+
+    /* ── Bootloader timeout check ─────────────────────── */
+	// TODO: if any command comes within this time time extend and if any active DFU connection it will ignore the timeout
+    if ((HAL_GetTick() - bootStartTick) >= BOOTLOADER_TIMEOUT_MS)
+    {
+        printf("[BOOT] Timeout reached — restarting...\r\n");
+        HAL_Delay(100);  // let UART flush
+        NVIC_SystemReset();
+    }
   }
   /* USER CODE END 3 */
 }
