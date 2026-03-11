@@ -100,6 +100,9 @@ void Bootloader_JumpToApplication(void)
     /* Set MSP to app's stack pointer */
     __set_MSP(appStack);
 
+    /* ── Enable Interrupts ─────────────────────── */
+    __enable_irq();
+
     /* Jump to app reset handler */
     pFunction appReset = (pFunction)appEntry;
     appReset();
